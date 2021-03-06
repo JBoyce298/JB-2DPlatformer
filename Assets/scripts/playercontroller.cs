@@ -7,14 +7,22 @@ public class playercontroller : MonoBehaviour
     Animator myAnim;
     SpriteRenderer sr;
     Rigidbody2D myBod;
+    public GameObject atk1;
+    public GameObject atk2;
 
     public float speed;
 
     private bool isGrounded = false;
 
-    private float timer = 0;
-    private bool stopped = false;
+    private float atktimer = 0;
+    public bool attacking = false;
     private float atkAir;
+
+    public bool isHurt = false;
+    private float hurtTime = 0;
+
+    public int health = 5;
+    private bool dead;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,21 +30,29 @@ public class playercontroller : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
 
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-
-        if (h > 0 && !stopped)
+        //movement
+        float h;
+        if (!dead)
+        {
+            h = Input.GetAxis("Horizontal");
+        }
+        else
+        {
+            h = 0;
+        }
+        
+        if (h > 0 && !attacking)
         {
             //run right
             sr.flipX = false;
             myAnim.SetBool("RUN", true);
         }
-        else if (h < 0 && !stopped)
+        else if (h < 0 && !attacking)
         {
             //run left
             sr.flipX = true;
@@ -47,12 +63,13 @@ public class playercontroller : MonoBehaviour
             myAnim.SetBool("RUN", false);
         }
 
-        myAnim.SetBool("FALL", !isGrounded);
-
         float x = h * speed;
         float y = myBod.velocity.y;
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        //jumping
+        myAnim.SetBool("FALL", !isGrounded);
+
+        if (Input.GetButtonDown("Jump") && isGrounded && !dead)
         {
             y = 7;
             myAnim.SetBool("JUMP", true);
@@ -62,44 +79,41 @@ public class playercontroller : MonoBehaviour
             myAnim.SetBool("JUMP", false);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if(y == 0)
         {
-            stopped = true;
+            myAnim.SetBool("FALL", false);
+            isGrounded = true;
+        }
+
+        //attack1
+        if (Input.GetMouseButtonDown(0) &&  !dead)
+        {
+            attacking = true;
             myAnim.SetBool("ATK2", true);
             atkAir = myBod.velocity.x;
+            Instantiate(atk2);
         }
         else
         {
             myAnim.SetBool("ATK2", false);
         }
 
-        if (Input.GetMouseButtonDown(1))
+        //attack2
+        if (Input.GetMouseButtonDown(1) && !dead)
         {
-            stopped = true;
+            attacking = true;
             myAnim.SetBool("ATK1", true);
             atkAir = myBod.velocity.x;
+            Instantiate(atk1);
         }
         else
         {
             myAnim.SetBool("ATK1", false);
+            
         }
 
-        if (myAnim.GetBool("HURT"))
-        {
-            if (sr.flipX)
-            {
-                Vector2 force = -4 * myBod.transform.position + 3 * myBod.transform.position;
-                myBod.AddForce(force, ForceMode2D.Impulse);
-            }
-            else
-            {
-                Vector2 force = 4 * myBod.transform.position + 3 * myBod.transform.position;
-                myBod.AddForce(force, ForceMode2D.Impulse);
-            }
-            myAnim.SetBool("HURT", false);
-        }
-
-        if (!stopped)
+        //keeps momentum if attacking in the air, also prevents attacking too many times in a row
+        if (!attacking)
         {
             myBod.velocity = new Vector2(x, y);
         }
@@ -114,23 +128,43 @@ public class playercontroller : MonoBehaviour
                 myBod.velocity = new Vector3(0, y);
             }
             
-            timer += Time.deltaTime;
+            atktimer += Time.deltaTime;
 
-            if(timer >= 0.583)
+            if(atktimer >= 0.6)
             {
-                stopped = false;
-                timer = 0;
+                attacking = false;
+                atktimer = 0;
             }
         }
-        
-        
+
+        //getting hit
+        if (isHurt && hurtTime > 1.5)
+        {
+            health--;
+            myAnim.SetBool("HURT", true);
+            hurtTime = 0;
+        }
+        else
+        {
+            myAnim.SetBool("HURT", false);
+            hurtTime += Time.deltaTime;
+        }
+
+        //dying
+        if(health <= 0)
+        {
+            myAnim.SetBool("DIE", true);
+            dead = true;
+        }
+
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Ground")
         {
             isGrounded = true;
-        } 
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
