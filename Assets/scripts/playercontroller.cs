@@ -9,6 +9,8 @@ public class playercontroller : MonoBehaviour
     Rigidbody2D myBod;
     public GameObject atk1;
     public GameObject atk2;
+    public GameObject atk1Left;
+    public GameObject atk2Left;
 
     public float speed;
 
@@ -21,7 +23,8 @@ public class playercontroller : MonoBehaviour
     public bool isHurt = false;
     private float hurtTime = 0;
 
-    public int health = 5;
+    public int health;
+    public int maxHealth;
     private bool dead;
     // Start is called before the first frame update
     void Start()
@@ -51,12 +54,24 @@ public class playercontroller : MonoBehaviour
             //run right
             sr.flipX = false;
             myAnim.SetBool("RUN", true);
+            Collider2D[] colliders = transform.GetComponents<Collider2D>();
+            foreach (Collider2D c in colliders)
+            {
+                float cly = c.offset.y;
+                c.offset = new Vector2(0.17f, cly);
+            }
         }
         else if (h < 0 && !attacking)
         {
             //run left
             sr.flipX = true;
             myAnim.SetBool("RUN", true);
+            Collider2D[] colliders = transform.GetComponents<Collider2D>();
+            foreach(Collider2D c in colliders)
+            {
+                float cly = c.offset.y;
+                c.offset = new Vector2(-0.17f, cly);
+            }
         }
         else
         {
@@ -91,7 +106,14 @@ public class playercontroller : MonoBehaviour
             attacking = true;
             myAnim.SetBool("ATK2", true);
             atkAir = myBod.velocity.x;
-            Instantiate(atk2);
+            if(sr.flipX)
+            {
+                Instantiate(atk2Left);
+            }
+            else
+            {
+                Instantiate(atk2);
+            }
         }
         else
         {
@@ -104,7 +126,14 @@ public class playercontroller : MonoBehaviour
             attacking = true;
             myAnim.SetBool("ATK1", true);
             atkAir = myBod.velocity.x;
-            Instantiate(atk1);
+            if (sr.flipX)
+            {
+                Instantiate(atk1Left);
+            }
+            else
+            {
+                Instantiate(atk1);
+            }
         }
         else
         {
