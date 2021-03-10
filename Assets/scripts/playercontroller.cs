@@ -86,7 +86,7 @@ public class playercontroller : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && isGrounded && !dead)
         {
-            y = 7;
+            y = 9;
             myAnim.SetBool("JUMP", true);
         }
         else
@@ -188,6 +188,22 @@ public class playercontroller : MonoBehaviour
 
 
     }
+
+    public void kill()
+    {
+        health = 0;
+        dead = true;
+    }
+
+    public bool getDead()
+    {
+        if(dead)
+        {
+            return true;
+        }
+        return false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Ground")

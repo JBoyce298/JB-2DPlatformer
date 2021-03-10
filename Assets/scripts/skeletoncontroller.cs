@@ -156,10 +156,19 @@ public class skeletoncontroller : MonoBehaviour
 
                 //check to track player
                 playDistance = playTrack.transform.position.x - transform.position.x;
-                if (Mathf.Abs(playDistance) < 4 && Mathf.Abs(playTrack.transform.position.y % transform.position.y) <= 0.5)
+                if ((Mathf.Abs(playDistance) < 5 && Mathf.Abs(playTrack.transform.position.y % transform.position.y) <= 0.5) && !playTrack.GetComponent<playercontroller>().getDead())
                 {
                     playerTracking = true;
                 }
+                else if ((Mathf.Abs(playDistance) < 15) && !playTrack.GetComponent<playercontroller>().getDead() && playerTracking)
+                {
+                    playerTracking = true;
+                }
+                else
+                {
+                    playerTracking = false;
+                }
+
 
                 //dying
                 if (health <= 0)

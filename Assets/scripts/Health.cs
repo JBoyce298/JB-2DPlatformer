@@ -5,7 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     playercontroller player;
-    public GameObject heart;
+    //public GameObject heart;
     int maxHearts;
     int health;
     public GameObject[] hearts;
