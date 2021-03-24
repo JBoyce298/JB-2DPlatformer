@@ -23,7 +23,7 @@ public class playercontroller : MonoBehaviour
     public bool isHurt = false;
     private float hurtTime = 0;
 
-    public int health;
+    public int health = 0;
     public int maxHealth;
     private bool dead;
     // Start is called before the first frame update
@@ -33,6 +33,7 @@ public class playercontroller : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
 
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -49,7 +50,7 @@ public class playercontroller : MonoBehaviour
             h = 0;
         }
         
-        if (h > 0 && !attacking)
+        if (h > 0 && !attacking && Time.timeScale != 0)
         {
             //run right
             sr.flipX = false;
@@ -61,7 +62,7 @@ public class playercontroller : MonoBehaviour
                 c.offset = new Vector2(0.17f, cly);
             }
         }
-        else if (h < 0 && !attacking)
+        else if (h < 0 && !attacking && Time.timeScale != 0)
         {
             //run left
             sr.flipX = true;
@@ -84,7 +85,7 @@ public class playercontroller : MonoBehaviour
         //jumping
         myAnim.SetBool("FALL", !isGrounded);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && !dead)
+        if (Input.GetButtonDown("Jump") && isGrounded && !dead && Time.timeScale != 0)
         {
             y = 9;
             myAnim.SetBool("JUMP", true);
@@ -101,7 +102,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack1
-        if (Input.GetMouseButtonDown(0) &&  !dead)
+        if (Input.GetMouseButtonDown(0) &&  !dead && Time.timeScale != 0)
         {
             attacking = true;
             myAnim.SetBool("ATK2", true);
@@ -121,7 +122,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack2
-        if (Input.GetMouseButtonDown(1) && !dead)
+        if (Input.GetMouseButtonDown(1) && !dead && Time.timeScale != 0)
         {
             attacking = true;
             myAnim.SetBool("ATK1", true);
@@ -167,7 +168,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //getting hit
-        if (isHurt && hurtTime > 1.5)
+        if (isHurt && hurtTime > 1.5 && Time.timeScale != 0)
         {
             health--;
             myAnim.SetBool("HURT", true);
