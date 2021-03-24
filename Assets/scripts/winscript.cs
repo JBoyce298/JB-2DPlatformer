@@ -24,7 +24,7 @@ public class winscript : MonoBehaviour
             }
         }
 
-        if(Time.timeScale == 0)
+        if(Time.timeScale == 0 && win)
         {
             winScreen.SetActive(true);
             win = false;

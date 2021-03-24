@@ -33,6 +33,11 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void quit()
     {
         //implement quit later

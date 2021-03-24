@@ -168,7 +168,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //getting hit
-        if (isHurt && hurtTime > 1.5 && Time.timeScale != 0)
+        if (isHurt && hurtTime > 1.5 && Time.timeScale != 0 && !dead)
         {
             health--;
             myAnim.SetBool("HURT", true);
