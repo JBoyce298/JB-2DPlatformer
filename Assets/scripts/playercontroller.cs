@@ -11,6 +11,9 @@ public class playercontroller : MonoBehaviour
     public GameObject atk2;
     public GameObject atk1Left;
     public GameObject atk2Left;
+    Collider2D col;
+
+    bool onPlatform = false;
 
     public float speed;
 
@@ -39,6 +42,14 @@ public class playercontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (onPlatform)
+        {
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                col.GetComponent<platformcontroller>().playerThrough = true;
+            }
+        }
+
         //movement
         float h;
         if (!dead)
@@ -77,6 +88,7 @@ public class playercontroller : MonoBehaviour
         else
         {
             myAnim.SetBool("RUN", false);
+
         }
 
         float x = h * speed;
@@ -85,7 +97,7 @@ public class playercontroller : MonoBehaviour
         //jumping
         myAnim.SetBool("FALL", !isGrounded);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && !dead && Time.timeScale != 0)
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && !dead && Time.timeScale != 0)
         {
             y = 9;
             myAnim.SetBool("JUMP", true);
@@ -95,10 +107,15 @@ public class playercontroller : MonoBehaviour
             myAnim.SetBool("JUMP", false);
         }
 
-        if(y == 0)
+        myAnim.SetBool("FALL", !isGrounded);
+
+        if (y == 0 || isGrounded)
         {
-            myAnim.SetBool("FALL", false);
             isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
 
         //attack1
@@ -145,7 +162,14 @@ public class playercontroller : MonoBehaviour
         //keeps momentum if attacking in the air, also prevents attacking too many times in a row
         if (!attacking)
         {
-            myBod.velocity = new Vector2(x, y);
+            if(h != 0)
+            {
+                myBod.velocity = new Vector2(x, y);
+            }
+            else
+            {
+                myBod.velocity = new Vector2(0, y);
+            }
         }
         else
         {
@@ -211,12 +235,30 @@ public class playercontroller : MonoBehaviour
         {
             isGrounded = true;
         }
+
+        if (collision.gameObject.tag == "Platform")
+        {
+            col = collision;
+            onPlatform = true;
+            if(Vector2.down.y > 0)
+            {
+                myBod.velocity = new Vector2(myBod.velocity.x, 0);
+            }
+            
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Ground" )
         {
+            isGrounded = false;
+        }
+
+        if (collision.gameObject.tag == "Platform")
+        {
+            col = null;
+            onPlatform = false;
             isGrounded = false;
         }
     }

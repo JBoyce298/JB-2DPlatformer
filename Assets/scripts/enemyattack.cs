@@ -15,9 +15,9 @@ public class enemyattack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameObject.GetComponentInParent<skeletoncontroller>() != null)
+        if (gameObject.GetComponentInParent<skeletoncontroller>() != null)
         {
-            if(delayTimer < 0.4)
+            if (delayTimer < 0.4)
             {
                 delayTimer += Time.deltaTime;
             }
@@ -32,14 +32,61 @@ public class enemyattack : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        else
+
+        if (gameObject.GetComponentInParent<MushroomController>() != null)
         {
+            if (delayTimer < 0.4)
+            {
+                delayTimer += Time.deltaTime;
+            }
+            else
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
             timer += Time.deltaTime;
             if (timer >= 1)
             {
                 Destroy(gameObject);
             }
         }
+
+        if (gameObject.GetComponentInParent<goblincontroller>() != null)
+        {
+            if (delayTimer < 0.4)
+            {
+                delayTimer += Time.deltaTime;
+            }
+            else
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+            timer += Time.deltaTime;
+            if (timer >= 1)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        if (gameObject.GetComponentInParent<swordguycontroller>() != null)
+        {
+            if (delayTimer < 0.2)
+            {
+                delayTimer += Time.deltaTime;
+            }
+            else
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+            timer += Time.deltaTime;
+            if (timer >= 1)
+            {
+                Destroy(gameObject);
+            }
+        }
+
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

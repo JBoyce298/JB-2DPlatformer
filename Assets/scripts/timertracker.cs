@@ -31,7 +31,6 @@ public class timertracker : MonoBehaviour
         //print(health);
         if (health != 0)
         {
-            print(health);
             gameTimer += Time.deltaTime * 100;
         }
 

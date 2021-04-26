@@ -27,7 +27,8 @@ public class skeletoncontroller : MonoBehaviour
     private float stopTimer = 0;
     private Vector2 tether;
 
-    private float playDistance;
+    private float playDistanceX;
+    private float playDistanceY;
     private bool playerTracking = false;
     private float atkTimer = 0;
 
@@ -116,7 +117,7 @@ public class skeletoncontroller : MonoBehaviour
                 }
                 else//track player
                 {
-                    if (playDistance < 0)
+                    if (playDistanceX < 0)
                     {
                         sr.flipX = true;
                     }
@@ -126,10 +127,10 @@ public class skeletoncontroller : MonoBehaviour
                     }
                     switchBox();
 
-                    if (Mathf.Abs(playDistance) > 2)
+                    if (Mathf.Abs(playDistanceX) > 2)
                     {
                         myAnim.SetBool("WALK", true);
-                        if(playDistance < 0)
+                        if(playDistanceX < 0)
                         {
                             myBod.velocity = new Vector2(-speed, myBod.velocity.y);
                         }
@@ -143,7 +144,7 @@ public class skeletoncontroller : MonoBehaviour
                     {
                         myAnim.SetBool("WALK", false);
                         atkTimer += Time.deltaTime;
-                        myBod.velocity = new Vector2(0, 0);
+                        myBod.velocity = new Vector2(0, myBod.velocity.y);
                         myAnim.SetBool("ATK1", false);
                         myAnim.SetBool("ATK2", false);
                         if (atkTimer >= 0.75)
@@ -155,12 +156,14 @@ public class skeletoncontroller : MonoBehaviour
                 }
 
                 //check to track player
-                playDistance = playTrack.transform.position.x - transform.position.x;
-                if ((Mathf.Abs(playDistance) < 5 && Mathf.Abs(playTrack.transform.position.y % transform.position.y) <= 0.5) && !playTrack.GetComponent<playercontroller>().getDead())
+                playDistanceX = playTrack.transform.position.x - transform.position.x;
+                playDistanceY = playTrack.transform.position.y - transform.position.y;
+                //print(playDistanceX);
+                if ((Mathf.Abs(playDistanceX) < 5 && Mathf.Abs(playDistanceY) < 5) && !playTrack.GetComponent<playercontroller>().getDead())
                 {
                     playerTracking = true;
                 }
-                else if ((Mathf.Abs(playDistance) < 15) && !playTrack.GetComponent<playercontroller>().getDead() && playerTracking)
+                else if ((Mathf.Abs(playDistanceX) < 15 && Mathf.Abs(playDistanceY) < 15) && !playTrack.GetComponent<playercontroller>().getDead() && playerTracking)
                 {
                     playerTracking = true;
                 }
@@ -264,7 +267,7 @@ public class skeletoncontroller : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D collision)
+ /*   public void OnTriggerEnter2D(Collider2D collision)
     {
         GameObject g = collision.gameObject;
         if(g.tag == "Player")
@@ -286,5 +289,5 @@ public class skeletoncontroller : MonoBehaviour
                 g.GetComponent<playercontroller>().isHurt = false;
             }
         }
-    }
+    }*/
 }

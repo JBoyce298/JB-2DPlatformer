@@ -20,6 +20,7 @@ public class Health : MonoBehaviour
     void Update()
     {
         health = player.health;
+        maxHearts = player.maxHealth;
 
         for (int i = 0; i < hearts.Length; i++)
         {

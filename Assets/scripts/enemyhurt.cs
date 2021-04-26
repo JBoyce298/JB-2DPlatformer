@@ -20,12 +20,42 @@ public class enemyhurt : MonoBehaviour
             {
                 gameObject.GetComponentInParent<skeletoncontroller>().hurt = true;
             }
+
+            if (gameObject.GetComponentInParent<MushroomController>() != null)
+            {
+                gameObject.GetComponentInParent<MushroomController>().hurt = true;
+            }
+
+            if (gameObject.GetComponentInParent<goblincontroller>() != null)
+            {
+                gameObject.GetComponentInParent<goblincontroller>().hurt = true;
+            }
+
+            if (gameObject.GetComponentInParent<swordguycontroller>() != null)
+            {
+                gameObject.GetComponentInParent<swordguycontroller>().hurt = true;
+            }
         }
         else
         {
             if (gameObject.GetComponentInParent<skeletoncontroller>() != null)
             {
                 gameObject.GetComponentInParent<skeletoncontroller>().hurt = false;
+            }
+
+            if (gameObject.GetComponentInParent<MushroomController>() != null)
+            {
+                gameObject.GetComponentInParent<MushroomController>().hurt = false;
+            }
+
+            if (gameObject.GetComponentInParent<goblincontroller>() != null)
+            {
+                gameObject.GetComponentInParent<goblincontroller>().hurt = false;
+            }
+
+            if (gameObject.GetComponentInParent<swordguycontroller>() != null)
+            {
+                gameObject.GetComponentInParent<swordguycontroller>().hurt = false;
             }
         }
     }
