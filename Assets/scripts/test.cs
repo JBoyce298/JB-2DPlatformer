@@ -92,6 +92,14 @@ public class test : MonoBehaviour
         }
     }
 
+    private void ShowBestTime(string data)
+    {
+        Text timer = GameObject.Find("EventSystem").GetComponent<timertracker>().best;
+        string cut = data.Substring(1, data.Length - 2);
+        string[] info = cut.Split(',');
+        timer.text = info[0];
+    }
+
     private void playerUpdateDeath(string data)
     {
         PostJSON(temppath, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
@@ -100,7 +108,7 @@ public class test : MonoBehaviour
         string[] info = cut.Split(',');
         if (cut == "" || data == "" || cut == null || data == null)
         {
-            string[] i = { "00:00:00", "0", "0", "0" };
+            string[] i = { "99:99:99", "0", "0", "0" };
             info = i;
         }
 
@@ -129,7 +137,7 @@ public class test : MonoBehaviour
         string[] info = cut.Split(',');
         if (cut == "" || data == "" || cut == null || data == null)
         {
-            string[] i = { "00:00:00", "0", "0", "0" };
+            string[] i = { "99:99:99", "0", "0", "0" };
             info = i;
         }
 
@@ -168,34 +176,22 @@ public class test : MonoBehaviour
 
         string[] timercut = timer.Split(':');
         string[] newtimercut = temptime.Split(':');
+        float count = 0;
+        float newcount = 0;
 
-        if (int.Parse(timercut[0]) > int.Parse(newtimercut[0]) || timer == null)
+        count += int.Parse(timercut[2]) + (int.Parse(timercut[1]) * 100) + (int.Parse(timercut[2]) * 100 * 60);
+        newcount += int.Parse(newtimercut[2]) + (int.Parse(newtimercut[1]) * 100) + (int.Parse(newtimercut[2]) * 100 * 60);
+
+        if (newcount > count)
         {
             timer = temptime;
         }
-        else if (int.Parse(timercut[0]) == int.Parse(newtimercut[0]))
-        {
-            if (int.Parse(timercut[1]) > int.Parse(newtimercut[1]))
-            {
-                timer = temptime;
-            }
-            else if (int.Parse(timercut[1]) == int.Parse(newtimercut[1]))
-            {
-                if (int.Parse(timercut[2]) > int.Parse(newtimercut[2]))
-                {
-                    timer = temptime;
-                }
-                else if (int.Parse(timercut[2]) == int.Parse(newtimercut[2]))
-                {
-                    timer = temptime;
-                }
-            }
-        }
-            string input = timer + "," + deaths + "," + enemy + "," + plays;
 
-            PostJSON(temppath, input, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
-            temppath = null;
-            temptime = null;
+        string input = timer + "," + deaths + "," + enemy + "," + plays;
+
+        PostJSON(temppath, input, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        temppath = null;
+        temptime = null;
     }
 
     private void Health(string data)
@@ -264,5 +260,12 @@ public class test : MonoBehaviour
         string path = transform.GetComponent<loginhandler>().getUserPass() + "/" + levelname;
         temppath = path;
         GetJSON(temppath, gameObject.name, "playerUpdateNothing", "OnRequestFailed");
+    }
+
+    public void bestTime(string level)
+    {
+        string path = transform.GetComponent<loginhandler>().getUserPass() + "/" + level;
+        temppath = path;
+        GetJSON(temppath, gameObject.name, "ShowBestTime", "OnRequestFailed");
     }
 }

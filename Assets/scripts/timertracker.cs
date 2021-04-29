@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class timertracker : MonoBehaviour
 {
@@ -19,14 +20,26 @@ public class timertracker : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player").GetComponent<playercontroller>();
-        
+
         //implement scores storing system with database
-        //best = ;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        string levelname = SceneManager.GetActiveScene().name;
+        string level;
+        if (levelname.Substring(levelname.Length - 1) == "0")
+        {
+            level = "level10";
+        }
+        else
+        {
+            level = "level" + levelname.Substring(levelname.Length - 1);
+        }
+        GameObject.Find("FirebaseHandler").GetComponent<test>().bestTime(level);
+
         health = player.health;
         //print(health);
         if (health != 0)

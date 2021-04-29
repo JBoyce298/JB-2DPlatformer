@@ -808,6 +808,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1151798330289341071, guid: 7d5a357140aa61c4e97b5e06cf4d800a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -133
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151798330289341071, guid: 7d5a357140aa61c4e97b5e06cf4d800a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -101
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151798330298494971, guid: 7d5a357140aa61c4e97b5e06cf4d800a,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 196
+      objectReference: {fileID: 0}
     - target: {fileID: 1151798330420636776, guid: 7d5a357140aa61c4e97b5e06cf4d800a,
         type: 3}
       propertyPath: m_Pivot.x
