@@ -255,7 +255,7 @@ public class wizardcontroller : MonoBehaviour
 
         if(!dead)
         {
-            healthbar.localScale = new Vector2(health / 20, 1);
+            healthbar.localScale = new Vector2(health / 20, 0.5f);
             healthText.text = health + "/20";
         }
         
