@@ -35,6 +35,11 @@ public class enemyhurt : MonoBehaviour
             {
                 gameObject.GetComponentInParent<swordguycontroller>().hurt = true;
             }
+
+            if (gameObject.GetComponentInParent<wizardcontroller>() != null)
+            {
+                gameObject.GetComponentInParent<wizardcontroller>().hurt = true;
+            }
         }
         else
         {
@@ -56,6 +61,11 @@ public class enemyhurt : MonoBehaviour
             if (gameObject.GetComponentInParent<swordguycontroller>() != null)
             {
                 gameObject.GetComponentInParent<swordguycontroller>().hurt = false;
+            }
+
+            if (gameObject.GetComponentInParent<wizardcontroller>() != null)
+            {
+                gameObject.GetComponentInParent<wizardcontroller>().hurt = false;
             }
         }
     }

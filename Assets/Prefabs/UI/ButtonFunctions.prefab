@@ -45,3 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menu: {fileID: 0}
   levels: {fileID: 0}
+  user: {fileID: 0}
+  pass: {fileID: 0}
+  handler: {fileID: 0}

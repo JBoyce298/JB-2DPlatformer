@@ -206,6 +206,7 @@ public class MushroomController : MonoBehaviour
             alph -= 0.01f;
             if (alph <= 0)
             {
+                playTrack.GetComponent<playercontroller>().monstersKilled++;
                 Destroy(gameObject);
             }
         }
@@ -267,28 +268,4 @@ public class MushroomController : MonoBehaviour
             }
         }
     }
-
-   /* public void OnTriggerEnter2D(Collider2D collision)
-    {
-        GameObject g = collision.gameObject;
-        if (g.tag == "Player")
-        {
-            if (!dead)
-            {
-                g.GetComponent<playercontroller>().isHurt = true;
-            }
-        }
-    }
-
-    public void OnTriggerExit2D(Collider2D collision)
-    {
-        GameObject g = collision.gameObject;
-        if (g.tag == "Player")
-        {
-            if (!dead)
-            {
-                g.GetComponent<playercontroller>().isHurt = false;
-            }
-        }
-    }*/
 }

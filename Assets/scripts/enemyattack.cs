@@ -87,6 +87,24 @@ public class enemyattack : MonoBehaviour
             }
         }
 
+        if (gameObject.GetComponentInParent<wizardcontroller>() != null)
+        {
+            if (delayTimer < 0.2)
+            {
+                delayTimer += Time.deltaTime;
+            }
+            else
+            {
+                gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+            timer += Time.deltaTime;
+            if (timer >= 4)
+            {
+                Destroy(gameObject);
+            }
+        }
+
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
