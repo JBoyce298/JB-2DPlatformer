@@ -33,14 +33,27 @@ public class playercontroller : MonoBehaviour
     private bool dead;
 
     public int monstersKilled = 0;
+    private bool deathreport;
     // Start is called before the first frame update
     void Start()
     {
         myAnim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
-        maxHealth = GameObject.Find("FirebaseHandler").GetComponent<test>().getMaxHealth();
+        GameObject.Find("FirebaseHandler").GetComponent<test>().getMaxHealth();
+        maxHealth = GameObject.Find("FirebaseHandler").GetComponent<test>().maxHealth;
         health = maxHealth;
+        string levelname = SceneManager.GetActiveScene().name;
+        string level;
+        if (levelname.Substring(levelname.Length - 1) == "0")
+        {
+            level = "level10";
+        }
+        else
+        {
+            level = "level" + levelname.Substring(levelname.Length - 1);
+        }
+        GameObject.Find("FirebaseHandler").GetComponent<test>().reportNothingFromPlayer(level);
     }
 
     // Update is called once per frame
@@ -214,11 +227,27 @@ public class playercontroller : MonoBehaviour
         {
             myAnim.SetBool("DIE", true);
             dead = true;
-
-            string levelname = SceneManager.GetActiveScene().name;
         }
 
+        if(dead)
+        {
+            string levelname = SceneManager.GetActiveScene().name;
+            string level;
+            if (levelname.Substring(levelname.Length - 1) == "0")
+            {
+                level = "level10";
+            }
+            else
+            {
+                level = "level" + levelname.Substring(levelname.Length - 1);
+            }
 
+            if (!deathreport)
+            {
+                GameObject.Find("FirebaseHandler").GetComponent<test>().reportDeathFromPlayer(level, monstersKilled);
+                deathreport = true;
+            }
+        }
     }
 
     public void kill()

@@ -724,6 +724,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 565182865}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &586566028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3567296820192610551, guid: 19b46afc37e89044b878bbff51d5bcc1,
+    type: 3}
+  m_PrefabInstance: {fileID: 1530658793}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &605293275 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7167181435450674582, guid: cb55ba7a1a63a92459fd9e7985069781,
@@ -4876,6 +4882,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 2973822154338639012, guid: 9099a01be0b327c4e9ea3d3da40a12e7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9099a01be0b327c4e9ea3d3da40a12e7, type: 3}
@@ -13385,7 +13396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8335f8f2a23ed6c43b8b4f536cce3282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winScreen: {fileID: 0}
+  winScreen: {fileID: 586566028}
 --- !u!61 &1814557849
 BoxCollider2D:
   m_ObjectHideFlags: 0

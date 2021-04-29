@@ -8,7 +8,13 @@ public class test : MonoBehaviour
 {
     int count;
     public Text testText;
-    int maxHealth;
+    public int maxHealth;
+    int monst;
+    string temppath;
+    string temptime;
+    string tempdata;
+    bool starttimer = false;
+    float delaytimer = 0;
 
     [DllImport("__Internal")]
     public static extern void GetJSON(string path, string objectName, string callback, string fallback);
@@ -35,7 +41,7 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        getMaxHealth();
     }
 
     private void OnRequestSuccess(string data)
@@ -55,7 +61,7 @@ public class test : MonoBehaviour
 
     private void SetCount(string data)
     {
-        count = int.Parse(data.Substring(1, 1));
+        count = int.Parse(data.Substring(1, data.Length - 2));
         count++;
         PostJSON("count", count + "", gameObject.name, "OnRequestSuccess", "OnRequestFailed");
     }
@@ -72,7 +78,7 @@ public class test : MonoBehaviour
         Text enemy = GameObject.Find("KillCount").GetComponent<Text>();
         Text plays = GameObject.Find("PlayCount").GetComponent<Text>();
 
-        timer.text = "00:00.00";
+        timer.text = "00:00:00";
         deaths.text = "0";
         enemy.text = "0";
         plays.text = "0";
@@ -86,6 +92,112 @@ public class test : MonoBehaviour
         }
     }
 
+    private void playerUpdateDeath(string data)
+    {
+        PostJSON(temppath, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        
+        string cut = data.Substring(1, data.Length - 2);
+        string[] info = cut.Split(',');
+        if (cut == "" || data == "" || cut == null || data == null)
+        {
+            string[] i = { "00:00:00", "0", "0", "0" };
+            info = i;
+        }
+
+
+        string timer = info[0];
+        int deaths = int.Parse(info[1]);
+        int enemy = int.Parse(info[2]);
+        int plays = int.Parse(info[3]);
+
+        deaths++;
+        enemy += monst;
+        monst = 0;
+        plays++;
+
+        string input = timer + "," + deaths + "," + enemy + "," + plays;
+
+        PostJSON(temppath, input, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        temppath = null;
+    }
+
+    private void playerUpdateNothing(string data)
+    {
+        PostJSON(temppath, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+
+        string cut = data.Substring(1, data.Length - 2);
+        string[] info = cut.Split(',');
+        if (cut == "" || data == "" || cut == null || data == null)
+        {
+            string[] i = { "00:00:00", "0", "0", "0" };
+            info = i;
+        }
+
+
+        string timer = info[0];
+        int deaths = int.Parse(info[1]);
+        int enemy = int.Parse(info[2]);
+        int plays = int.Parse(info[3]);
+
+        string input = timer + "," + deaths + "," + enemy + "," + plays;
+
+        PostJSON(temppath, input, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        temppath = null;
+    }
+
+    private void playerUpdateWin(string data)
+    {
+        PostJSON(temppath, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+
+        string cut = data.Substring(1, data.Length - 2);
+        string[] info = cut.Split(',');
+        if (cut == "" || data == "" || cut == null || data == null)
+        {
+            string[] i = { temptime, "0", "0", "0" };
+            info = i;
+        }
+
+        string timer = info[0];
+        int deaths = int.Parse(info[1]);
+        int enemy = int.Parse(info[2]);
+        int plays = int.Parse(info[3]);
+
+        enemy += monst;
+        monst = 0;
+        plays++;
+
+        string[] timercut = timer.Split(':');
+        string[] newtimercut = temptime.Split(':');
+
+        if (int.Parse(timercut[0]) > int.Parse(newtimercut[0]) || timer == null)
+        {
+            timer = temptime;
+        }
+        else if (int.Parse(timercut[0]) == int.Parse(newtimercut[0]))
+        {
+            if (int.Parse(timercut[1]) > int.Parse(newtimercut[1]))
+            {
+                timer = temptime;
+            }
+            else if (int.Parse(timercut[1]) == int.Parse(newtimercut[1]))
+            {
+                if (int.Parse(timercut[2]) > int.Parse(newtimercut[2]))
+                {
+                    timer = temptime;
+                }
+                else if (int.Parse(timercut[2]) == int.Parse(newtimercut[2]))
+                {
+                    timer = temptime;
+                }
+            }
+        }
+            string input = timer + "," + deaths + "," + enemy + "," + plays;
+
+            PostJSON(temppath, input, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+            temppath = null;
+            temptime = null;
+    }
+
     private void Health(string data)
     {
         if(data == null)
@@ -93,7 +205,7 @@ public class test : MonoBehaviour
             maxHealth = 05;
 
             string path = transform.GetComponent<loginhandler>().getUserPass() + "/health";
-            PushJSON(path, "05", gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+            PostJSON(path, "05", gameObject.name, "OnRequestSuccess", "OnRequestFailed");
         }
         else
         {
@@ -113,8 +225,6 @@ public class test : MonoBehaviour
 
     public void level(string path)
     {
-        //testText.text = path;
-        //testText.color = Color.red;
         GetJSON(path, gameObject.name, "LevelStats", "OnRequestFailed");
     }
 
@@ -124,10 +234,34 @@ public class test : MonoBehaviour
     }
 
 
-    public int getMaxHealth()
+    public void getMaxHealth()
     {
         string path = transform.GetComponent<loginhandler>().getUserPass() + "/health";
         GetJSON(path, gameObject.name, "Health", "OnRequestFailed");
-        return maxHealth;
+    }
+
+    public void reportDeathFromPlayer(string levelname, int monsters)
+    {
+        monst = monsters;
+        string path = transform.GetComponent<loginhandler>().getUserPass() + "/" + levelname;
+        temppath = path;
+        GetJSON(temppath, gameObject.name, "playerUpdateDeath", "OnRequestFailed");
+    }
+
+    public void reportWinFromPlayer(string levelname, int monsters, string time)
+    {
+        monst = monsters;
+        temptime = time;
+        string path = transform.GetComponent<loginhandler>().getUserPass() + "/" + levelname;
+        temppath = path;
+        GetJSON(temppath, gameObject.name, "playerUpdateWin", "OnRequestFailed");
+        
+    }
+
+    public void reportNothingFromPlayer(string levelname)
+    {
+        string path = transform.GetComponent<loginhandler>().getUserPass() + "/" + levelname;
+        temppath = path;
+        GetJSON(temppath, gameObject.name, "playerUpdateNothing", "OnRequestFailed");
     }
 }

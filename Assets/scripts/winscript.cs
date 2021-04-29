@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class winscript : MonoBehaviour
 {
@@ -28,6 +30,21 @@ public class winscript : MonoBehaviour
         {
             winScreen.SetActive(true);
             win = false;
+
+            string levelname = SceneManager.GetActiveScene().name;
+            string level = "";
+            if (levelname.Substring(levelname.Length - 1) == "0")
+            {
+                level = "level10";
+            }
+            else
+            {
+                level = "level" + levelname.Substring(levelname.Length - 1);
+            }
+
+            int monst = GameObject.Find("Player").GetComponent<playercontroller>().monstersKilled;
+            string time = GameObject.Find("WinTimer").GetComponent<Text>().text;
+            GameObject.Find("FirebaseHandler").GetComponent<test>().reportWinFromPlayer(level, monst, time);
         }
     }
 
