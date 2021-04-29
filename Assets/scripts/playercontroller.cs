@@ -40,10 +40,13 @@ public class playercontroller : MonoBehaviour
         myAnim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
-        GameObject.Find("FirebaseHandler").GetComponent<test>().getMaxHealth();
-        maxHealth = GameObject.Find("FirebaseHandler").GetComponent<test>().maxHealth;
-        health = maxHealth;
         string levelname = SceneManager.GetActiveScene().name;
+
+        /*GameObject.Find("FirebaseHandler").GetComponent<test>().getMaxHealth();
+        maxHealth = GameObject.Find("FirebaseHandler").GetComponent<test>().maxHealth;*/
+        health = maxHealth;
+
+        levelname = SceneManager.GetActiveScene().name;
         string level;
         if (levelname.Substring(levelname.Length - 1) == "0")
         {

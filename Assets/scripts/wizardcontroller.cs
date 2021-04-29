@@ -115,9 +115,11 @@ public class wizardcontroller : MonoBehaviour
             stopTimer += Time.deltaTime;
             myAnim.SetBool("FIRE", false);
             myAnim.SetBool("TELE", true);
-            if(stopTimer >= 1)
+            if (stopTimer >= 1)
             {
                 transform.position = new Vector2(18f, 3f);
+                myBod.velocity = new Vector2(0, 0);
+                myAnim.SetBool("WALK", false);
                 stopTimer = 0;
                 teleported = true;
                 hitDelay = false;

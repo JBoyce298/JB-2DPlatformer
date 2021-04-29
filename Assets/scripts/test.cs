@@ -8,7 +8,7 @@ public class test : MonoBehaviour
 {
     int count;
     public Text testText;
-    public int maxHealth;
+    public int maxHealth = 5;
     int monst;
     string temppath;
     string temptime;
@@ -41,7 +41,7 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        getMaxHealth();
+        //getMaxHealth();
     }
 
     private void OnRequestSuccess(string data)
@@ -200,12 +200,12 @@ public class test : MonoBehaviour
 
     private void Health(string data)
     {
-        if(data == null)
+        string path = transform.GetComponent<loginhandler>().getUserPass() + "/health";
+        PostJSON(path, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        if (data == null || data == "")
         {
-            maxHealth = 05;
-
-            string path = transform.GetComponent<loginhandler>().getUserPass() + "/health";
-            PostJSON(path, "05", gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+            PostJSON(path, "" + maxHealth, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+            temppath = path;
         }
         else
         {
@@ -216,6 +216,7 @@ public class test : MonoBehaviour
     public void log(string path)
     {
         PushJSON(path, null, gameObject.name, "OnRequestSuccess", "OnRequestFailed");
+        
     }
 
     public void levelData(string path, string data)
