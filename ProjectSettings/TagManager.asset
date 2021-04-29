@@ -8,6 +8,8 @@ TagManager:
   - Ground
   - HitBox
   - Platform
+  - levels
+  - mainmenu
   layers:
   - Default
   - TransparentFX

@@ -210,6 +210,7 @@ public class swordguycontroller : MonoBehaviour
             alph -= 0.01f;
             if (alph <= 0)
             {
+                playTrack.GetComponent<playercontroller>().monstersKilled++;
                 Destroy(gameObject);
             }
         }

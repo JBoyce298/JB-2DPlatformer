@@ -9,11 +9,37 @@ public class Menu : MonoBehaviour
 {
     public GameObject menu;
     public GameObject levels;
+    public GameObject stats;
+    public InputField user;
+    public InputField pass;
+    public GameObject handler;
+
+    string tempuser;
+    string temppass;
+
+    void Start()
+    {
+        handler = GameObject.Find("FirebaseHandler");     
+    }
+
+    public void login()
+    {
+        tempuser = user.text;
+        temppass = pass.text;
+
+        string path = tempuser + temppass;
+
+        handler.GetComponent<test>().log(path);
+        handler.GetComponent<loginhandler>().Login(tempuser, temppass);
+
+        SceneManager.LoadScene("Main");
+    }
 
     public void levelSelect()
     {
-        levels.SetActive(true);
+        levels.SetActive(true);       
         menu.SetActive(false);
+        stats.SetActive(false);
     }
 
     public void backToMenu()
@@ -43,6 +69,11 @@ public class Menu : MonoBehaviour
     {
         //implement quit later
         //EditorApplication.isPlaying = false;
+        //tempuser = null;
+        //temppass = null;
+        //handler.GetComponent<loginhandler>().Logout();
+        SceneManager.LoadScene("Login");
+        
     }
 
     public void level1()
@@ -105,8 +136,10 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public void stats(int level)
+    public void levelStats(int level)
     {
-
+        stats.SetActive(true);
+        stats.GetComponent<stats>().load(level);
+        levels.SetActive(false);
     }
 }

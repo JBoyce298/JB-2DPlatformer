@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playercontroller : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class playercontroller : MonoBehaviour
     private float atktimer = 0;
     public bool attacking = false;
     private float atkAir;
+    private float atkDelay = 0.6f;
 
     public bool isHurt = false;
     private float hurtTime = 0;
@@ -29,13 +31,15 @@ public class playercontroller : MonoBehaviour
     public int health = 0;
     public int maxHealth;
     private bool dead;
+
+    public int monstersKilled = 0;
     // Start is called before the first frame update
     void Start()
     {
         myAnim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
-
+        maxHealth = GameObject.Find("FirebaseHandler").GetComponent<test>().getMaxHealth();
         health = maxHealth;
     }
 
@@ -119,8 +123,9 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack1
-        if (Input.GetMouseButtonDown(0) &&  !dead && Time.timeScale != 0)
+        if (Input.GetMouseButtonDown(0) &&  !dead && Time.timeScale != 0 && atkDelay >= 0.6)
         {
+            atkDelay = 0;
             attacking = true;
             myAnim.SetBool("ATK2", true);
             atkAir = myBod.velocity.x;
@@ -139,7 +144,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack2
-        if (Input.GetMouseButtonDown(1) && !dead && Time.timeScale != 0)
+        if (Input.GetMouseButtonDown(1) && !dead && Time.timeScale != 0 && atkDelay >= 0.6)
         {
             attacking = true;
             myAnim.SetBool("ATK1", true);
@@ -158,7 +163,7 @@ public class playercontroller : MonoBehaviour
             myAnim.SetBool("ATK1", false);
             
         }
-
+        atkDelay += Time.deltaTime;
         //keeps momentum if attacking in the air, also prevents attacking too many times in a row
         if (!attacking)
         {
@@ -209,6 +214,8 @@ public class playercontroller : MonoBehaviour
         {
             myAnim.SetBool("DIE", true);
             dead = true;
+
+            string levelname = SceneManager.GetActiveScene().name;
         }
 
 
