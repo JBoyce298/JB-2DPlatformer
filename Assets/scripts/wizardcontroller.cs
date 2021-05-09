@@ -115,10 +115,11 @@ public class wizardcontroller : MonoBehaviour
             stopTimer += Time.deltaTime;
             myAnim.SetBool("FIRE", false);
             myAnim.SetBool("TELE", true);
+            myBod.constraints = RigidbodyConstraints2D.FreezeAll;
             if (stopTimer >= 1)
             {
                 transform.position = new Vector2(18f, 3f);
-                myBod.velocity = new Vector2(0, 0);
+                myBod.constraints = RigidbodyConstraints2D.FreezeAll;
                 myAnim.SetBool("WALK", false);
                 stopTimer = 0;
                 teleported = true;
@@ -131,6 +132,7 @@ public class wizardcontroller : MonoBehaviour
 
         if(teleported)
         {
+            myAnim.SetBool("FIRE", false);
             teleTimer += Time.deltaTime;
             if(teleTimer >= 1)
             {
@@ -187,6 +189,8 @@ public class wizardcontroller : MonoBehaviour
                     myAnim.SetBool("SUMMON", false);
                     myBod.gravityScale = 1;
                     summontotal = 0;
+                    myBod.constraints = RigidbodyConstraints2D.None;
+                    myBod.constraints = RigidbodyConstraints2D.FreezeRotation;
                 }
             }
             else
@@ -231,6 +235,8 @@ public class wizardcontroller : MonoBehaviour
                     summonDelay = 0;
                     myAnim.SetBool("SUMMON", false);
                     myBod.gravityScale = 1;
+                    myBod.constraints = RigidbodyConstraints2D.None;
+                    myBod.constraints = RigidbodyConstraints2D.FreezeRotation;
                 }
             }
         }

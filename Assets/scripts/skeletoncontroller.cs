@@ -8,6 +8,7 @@ public class skeletoncontroller : MonoBehaviour
     SpriteRenderer sr;
     Rigidbody2D myBod;
     BoxCollider2D myBox;
+    CircleCollider2D myCircleBox;
     GameObject playTrack;
 
     public GameObject atk1;
@@ -41,6 +42,7 @@ public class skeletoncontroller : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
         myBox = GetComponent<BoxCollider2D>();
+        myCircleBox = GetComponent<CircleCollider2D>();
         playTrack = GameObject.Find("Player");
 
         tether = transform.position;
@@ -198,8 +200,10 @@ public class skeletoncontroller : MonoBehaviour
         }
         else
         {
-            myBox.size = new Vector2(0.721f,0.310f);
-            myBox.offset = new Vector2(myBox.offset.x,-0.7f);
+            //myBox.size = new Vector2(0.721f,0.310f);
+            //myBox.offset = new Vector2(myBox.offset.x,-0.7f);
+            myBox.enabled = false;
+            myCircleBox.enabled = false;
             myBod.constraints = RigidbodyConstraints2D.FreezePosition;
             sr.material.color = new Color(1.0f, 1.0f, 1.0f, alph);
             alph -= 0.01f;

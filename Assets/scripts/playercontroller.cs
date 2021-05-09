@@ -117,7 +117,7 @@ public class playercontroller : MonoBehaviour
         //jumping
         myAnim.SetBool("FALL", !isGrounded);
 
-        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow)) && isGrounded && !dead && Time.timeScale != 0)
+        if ((Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded && !dead && Time.timeScale != 0)
         {
             y = 9;
             myAnim.SetBool("JUMP", true);
@@ -139,7 +139,7 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack1
-        if (Input.GetMouseButtonDown(0) &&  !dead && Time.timeScale != 0 && atkDelay >= 0.6)
+        if ((Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0)) &&  !dead && Time.timeScale != 0 && atkDelay >= 0.7)
         {
             atkDelay = 0;
             attacking = true;
@@ -160,8 +160,9 @@ public class playercontroller : MonoBehaviour
         }
 
         //attack2
-        if (Input.GetMouseButtonDown(1) && !dead && Time.timeScale != 0 && atkDelay >= 0.6)
+        if ((Input.GetKeyDown(KeyCode.K) || Input.GetMouseButtonDown(1)) && !dead && Time.timeScale != 0 && atkDelay >= 0.6)
         {
+            atkDelay = 0;
             attacking = true;
             myAnim.SetBool("ATK1", true);
             atkAir = myBod.velocity.x;

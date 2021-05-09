@@ -7,7 +7,7 @@ public class goblincontroller : MonoBehaviour
     Animator myAnim;
     SpriteRenderer sr;
     Rigidbody2D myBod;
-    BoxCollider2D myBox;
+    CapsuleCollider2D myBox;
     GameObject playTrack;
 
     public GameObject atk1;
@@ -40,7 +40,7 @@ public class goblincontroller : MonoBehaviour
         myAnim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         myBod = GetComponent<Rigidbody2D>();
-        myBox = GetComponent<BoxCollider2D>();
+        myBox = GetComponent<CapsuleCollider2D>();
 
         playTrack = GameObject.Find("Player");
 
@@ -199,8 +199,9 @@ public class goblincontroller : MonoBehaviour
         }
         else
         {
-            myBox.size = new Vector2(1.21f, 0.25f);
-            myBox.offset = new Vector2(myBox.offset.x, -0.74f);
+            //myBox.size = new Vector2(1.21f, 0.25f);
+            //myBox.offset = new Vector2(myBox.offset.x, -0.74f);
+            myBox.enabled = false;
             myBod.constraints = RigidbodyConstraints2D.FreezePosition;
             sr.material.color = new Color(1.0f, 1.0f, 1.0f, alph);
             alph -= 0.01f;

@@ -24,6 +24,7 @@ public class pinkpotcontroller : MonoBehaviour
             if(!given)
             {
                 collision.gameObject.GetComponent<playercontroller>().maxHealth++;
+                collision.gameObject.GetComponent<playercontroller>().health++;
                 Destroy(gameObject);
                 given = true;
             }
