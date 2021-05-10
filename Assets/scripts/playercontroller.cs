@@ -32,6 +32,8 @@ public class playercontroller : MonoBehaviour
     public int maxHealth;
     private bool dead;
 
+    private string h;
+
     public int monstersKilled = 0;
     private bool deathreport;
     // Start is called before the first frame update
